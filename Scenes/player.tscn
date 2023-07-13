@@ -1,10 +1,15 @@
-[gd_scene load_steps=19 format=3 uid="uid://b344lcesr18iu"]
+[gd_scene load_steps=24 format=3 uid="uid://b344lcesr18iu"]
 
 [ext_resource type="Texture2D" uid="uid://brtw8rbpvxhnd" path="res://Assets/adventurer-v1.5-Sheet.png" id="1_6qmvi"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_qf8w3"]
 [ext_resource type="Script" path="res://Scripts/PlayerStates/StateMachine.gd" id="3_shxgc"]
 [ext_resource type="Script" path="res://Scripts/PlayerStates/run_state.gd" id="4_nx3b2"]
 [ext_resource type="Script" path="res://Scripts/PlayerStates/fall_state.gd" id="5_fqtd1"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/jump_state.gd" id="6_526vk"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/slide_state.gd" id="7_bypd2"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/forward_attack_state.gd" id="8_kgvm8"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/air_attack_forward_state.gd" id="9_irbvv"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/air_attack_downward_state.gd" id="10_jeo5q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rpwig"]
 size = Vector2(18, 27)
@@ -231,3 +236,23 @@ script = ExtResource("4_nx3b2")
 
 [node name="fall_state" type="Node" parent="StateMachine"]
 script = ExtResource("5_fqtd1")
+
+[node name="jump_state" type="Node" parent="StateMachine"]
+script = ExtResource("6_526vk")
+
+[node name="slide_state" type="Node" parent="StateMachine"]
+script = ExtResource("7_bypd2")
+
+[node name="forward_attack_state" type="Node" parent="StateMachine"]
+script = ExtResource("8_kgvm8")
+
+[node name="air_attack_forward_state" type="Node" parent="StateMachine"]
+script = ExtResource("9_irbvv")
+
+[node name="air_attack_downward_state" type="Node" parent="StateMachine"]
+script = ExtResource("10_jeo5q")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/slide_state" method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/forward_attack_state" method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/air_attack_forward_state" method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/air_attack_downward_state" method="_on_animation_player_animation_finished"]

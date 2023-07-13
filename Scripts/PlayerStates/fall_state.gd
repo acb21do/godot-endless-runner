@@ -10,7 +10,7 @@ func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("down"):
 		player.velocity.y = 150 * 3
 	if Input.is_action_pressed("down") and Input.is_action_pressed("attack"):
-		state_machine.transition_to("air_attack_down_state")
+		state_machine.transition_to("air_attack_downward_state")
 		return
 
 	if event.is_action_pressed("attack") and player.can_attack:
