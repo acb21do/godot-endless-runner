@@ -2,12 +2,16 @@ extends PlayerState
 
 
 func enter(_msg:= {}):
+	player.can_attack = true
+	#Start jumping if the player is holding the jump key
+	if Input.is_action_pressed("up"):
+		state_machine.transition_to("jump_state")
+		return
 	#Enter the fall state upon entering if not on floor
 	if not player.is_on_floor():
 		state_machine.transition_to("fall_state")
 		return
 	player.animationPlayer.play("run")
-	player.can_attack = true
 
 
 func handle_input(event: InputEvent) -> void:

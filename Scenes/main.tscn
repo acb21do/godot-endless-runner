@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsjodlsjkium"]
+[gd_scene load_steps=12 format=3 uid="uid://dsjodlsjkium"]
 
 [ext_resource type="Script" path="res://Scripts/background_layer.gd" id="1_2e1bt"]
 [ext_resource type="PackedScene" uid="uid://b344lcesr18iu" path="res://Scenes/player.tscn" id="1_aia38"]
@@ -9,49 +9,92 @@
 [ext_resource type="Texture2D" uid="uid://cqcb28mau1ssb" path="res://Assets/parallax-03.png" id="5_yxpf7"]
 [ext_resource type="Texture2D" uid="uid://c7tcgnivgpqc8" path="res://Assets/parallax-04.png" id="6_cn3r6"]
 [ext_resource type="PackedScene" uid="uid://b55fk2j3wg1js" path="res://Scenes/platform_spawner.tscn" id="8_oswv1"]
+[ext_resource type="FontFile" uid="uid://dydmk7xwwgd47" path="res://Assets/ARCADECLASSIC.TTF" id="10_y8o7c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ioi02"]
+size = Vector2(512, 40)
 
 [node name="Main" type="Node"]
+process_mode = 3
 script = ExtResource("1_pwdj2")
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="GameProcesses" type="Node" parent="."]
+process_mode = 1
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="GameProcesses"]
 script = ExtResource("1_2e1bt")
 
-[node name="Parallax-00" type="Sprite2D" parent="ParallaxBackground"]
+[node name="Parallax-00" type="Sprite2D" parent="GameProcesses/ParallaxBackground"]
 position = Vector2(256, 135)
 texture = ExtResource("2_1eele")
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="GameProcesses/ParallaxBackground"]
 motion_scale = Vector2(0.5, 0.5)
 motion_mirroring = Vector2(1440, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+[node name="Sprite2D" type="Sprite2D" parent="GameProcesses/ParallaxBackground/ParallaxLayer2"]
 position = Vector2(244, 130)
 texture = ExtResource("3_jxku0")
 
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="GameProcesses/ParallaxBackground"]
 motion_scale = Vector2(0.6, 0.6)
 motion_mirroring = Vector2(1440, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+[node name="Sprite2D" type="Sprite2D" parent="GameProcesses/ParallaxBackground/ParallaxLayer3"]
 position = Vector2(256, 134)
 texture = ExtResource("4_fh2q5")
 
-[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="GameProcesses/ParallaxBackground"]
 motion_scale = Vector2(0.7, 0)
 motion_mirroring = Vector2(1440, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+[node name="Sprite2D" type="Sprite2D" parent="GameProcesses/ParallaxBackground/ParallaxLayer4"]
 position = Vector2(256, 115)
 texture = ExtResource("5_yxpf7")
 
-[node name="ParallaxLayer5" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="GameProcesses/ParallaxBackground"]
 motion_mirroring = Vector2(1440, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer5"]
+[node name="Sprite2D" type="Sprite2D" parent="GameProcesses/ParallaxBackground/ParallaxLayer5"]
 position = Vector2(256, 150)
 texture = ExtResource("6_cn3r6")
 
-[node name="PlatformSpawner" parent="." instance=ExtResource("8_oswv1")]
+[node name="PlatformSpawner" parent="GameProcesses" instance=ExtResource("8_oswv1")]
 
 [node name="Player" parent="." instance=ExtResource("1_aia38")]
-position = Vector2(256, 54)
+process_mode = 1
+position = Vector2(256, 191)
+collision_layer = 3
+
+[node name="Deadzone" type="Area2D" parent="."]
+position = Vector2(256, 303)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deadzone"]
+shape = SubResource("RectangleShape2D_ioi02")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Score" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_y8o7c")
+text = "0"
+
+[connection signal="body_entered" from="Deadzone" to="." method="_on_deadzone_body_entered"]

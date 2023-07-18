@@ -3,12 +3,12 @@ extends PlayerState
 
 func enter(msg:= {}):
 	if msg.get("Fast Fall"):
-		player.velocity.y = 150 * 3
+		fast_fall()
 	player.animationPlayer.play("fall")
 
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("down"):
-		player.velocity.y = 150 * 3
+		fast_fall()
 	if Input.is_action_pressed("down") and Input.is_action_pressed("attack"):
 		state_machine.transition_to("air_attack_downward_state")
 		return
@@ -23,3 +23,6 @@ func physics_update(delta: float) -> void:
 		return
 	player.apply_gravity(delta)
 	player.move_and_slide()
+
+func fast_fall():
+	player.velocity.y = 1000#150 * 4

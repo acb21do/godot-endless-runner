@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b344lcesr18iu"]
+[gd_scene load_steps=25 format=3 uid="uid://b344lcesr18iu"]
 
 [ext_resource type="Texture2D" uid="uid://brtw8rbpvxhnd" path="res://Assets/adventurer-v1.5-Sheet.png" id="1_6qmvi"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_qf8w3"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://Scripts/PlayerStates/forward_attack_state.gd" id="8_kgvm8"]
 [ext_resource type="Script" path="res://Scripts/PlayerStates/air_attack_forward_state.gd" id="9_irbvv"]
 [ext_resource type="Script" path="res://Scripts/PlayerStates/air_attack_downward_state.gd" id="10_jeo5q"]
+[ext_resource type="Script" path="res://Scripts/PlayerStates/idle_state.gd" id="11_l8l2v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rpwig"]
 size = Vector2(18, 27)
@@ -209,6 +210,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_qf8w3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -218,7 +220,6 @@ vframes = 16
 frame = 103
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(-1, 3.5)
 shape = SubResource("RectangleShape2D_rpwig")
 
@@ -229,7 +230,7 @@ libraries = {
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3_shxgc")
-initial_state = NodePath("run_state")
+initial_state = NodePath("idle_state")
 
 [node name="run_state" type="Node" parent="StateMachine"]
 script = ExtResource("4_nx3b2")
@@ -251,6 +252,9 @@ script = ExtResource("9_irbvv")
 
 [node name="air_attack_downward_state" type="Node" parent="StateMachine"]
 script = ExtResource("10_jeo5q")
+
+[node name="idle_state" type="Node" parent="StateMachine"]
+script = ExtResource("11_l8l2v")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/slide_state" method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimationPlayer" to="StateMachine/forward_attack_state" method="_on_animation_player_animation_finished"]
